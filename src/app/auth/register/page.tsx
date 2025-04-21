@@ -41,6 +41,8 @@ export default function Register() {
     setError('');
 
     try {
+      console.log('Sending registration request...');
+      
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: {
@@ -52,13 +54,30 @@ export default function Register() {
           password: formData.password,
         }),
       });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Registration failed');
+      
+      console.log('Response status:', response.status);
+      
+      let data;
+      try {
+        const text = await response.text();
+        console.log('Response text:', text);
+        
+        try {
+          data = JSON.parse(text);
+        } catch (parseError) {
+          console.error('Error parsing response JSON:', parseError);
+          throw new Error(`Server response is not valid JSON: ${text.substring(0, 100)}...`);
+        }
+      } catch (textError) {
+        console.error('Error reading response text:', textError);
+        throw new Error(`Failed to read server response: ${textError.message}`);
       }
 
+      if (!response.ok) {
+        throw new Error(data?.message || `Server error: ${response.status}`);
+      }
+
+      console.log('Registration successful, redirecting to sign in page...');
       // Redirect to sign in page after successful registration
       router.push('/auth/signin');
     } catch (error: any) {
