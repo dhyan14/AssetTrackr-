@@ -8,46 +8,7 @@ import DashboardHeader from '@/components/DashboardHeader';
 import InvestmentSummary from '@/components/InvestmentSummary';
 import InvestmentChart from '@/components/InvestmentChart';
 import InvestmentList from '@/components/InvestmentList';
-
-// Define interfaces for investment types
-interface FixedDeposit {
-  _id: string;
-  bankName: string;
-  amount: number;
-  interestRate: number;
-  startDate: string;
-  maturityDate: string;
-  currentValue: number;
-}
-
-interface Property {
-  _id: string;
-  name?: string;
-  location: string;
-  purchaseDate: string;
-  purchasePrice: number;
-  currentValue: number;
-  propertyType: string;
-  area: number;
-}
-
-interface Stock {
-  _id: string;
-  symbol: string;
-  companyName: string;
-  purchaseDate: string;
-  purchasePrice: number;
-  quantity: number;
-  currentPrice: number;
-  currentValue: number;
-}
-
-// Interface for investment data state
-interface InvestmentData {
-  fixedDeposits: FixedDeposit[];
-  properties: Property[];
-  stocks: Stock[];
-}
+import { InvestmentData } from '@/types';
 
 export default function Dashboard() {
   const { data: session, status } = useSession();

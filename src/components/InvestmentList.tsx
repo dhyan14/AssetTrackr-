@@ -1,15 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-
-interface InvestmentItem {
-  _id: string;
-  [key: string]: any;
-}
+import { InvestmentItem, InvestmentType } from '@/types';
 
 interface InvestmentListProps {
   title: string;
-  type: string;
+  type: InvestmentType;
   items: InvestmentItem[];
   addNewLink: string;
 }
