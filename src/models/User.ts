@@ -24,7 +24,8 @@ const UserSchema = new mongoose.Schema<IUser>(
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
         'Please provide a valid email'
       ],
-      unique: true
+      unique: true,
+      index: true
     },
     password: {
       type: String,
@@ -35,24 +36,30 @@ const UserSchema = new mongoose.Schema<IUser>(
   { timestamps: true }
 );
 
-// Hash password before saving
+UserSchema.index({ email: 1 });
+
 UserSchema.pre('save', async function(next) {
   if (!this.isModified('password')) {
     return next();
   }
   
   try {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+    this.password = await bcrypt.hash(this.password, 8);
     next();
   } catch (error: any) {
+    console.error('Password hashing error:', error);
     next(error);
   }
 });
 
-// Compare password method
 UserSchema.methods.comparePassword = async function(candidatePassword: string): Promise<boolean> {
-  return bcrypt.compare(candidatePassword, this.password);
+  try {
+    return await bcrypt.compare(candidatePassword, this.password);
+  } catch (error) {
+    console.error('Password comparison error:', error);
+    return false;
+  }
 };
 
-export default mongoose.models.User || mongoose.model<IUser>('User', UserSchema); 
+const User = mongoose.models.User || mongoose.model<IUser>('User', UserSchema);
+export default User; 
