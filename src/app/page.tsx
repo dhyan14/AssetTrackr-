@@ -44,18 +44,17 @@ export default function Home() {
             <div className="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center">
               <div className="relative mx-auto w-full rounded-lg shadow-lg lg:max-w-md">
                 <div className="relative block w-full bg-white rounded-lg overflow-hidden">
-                  <Image
-                    src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-                    alt="Dashboard preview"
-                    width={800}
-                    height={600}
-                    className="w-full"
-                  />
-                  <div className="absolute inset-0 w-full h-full flex items-center justify-center">
-                    <svg className="h-20 w-20 text-primary-500" fill="currentColor" viewBox="0 0 84 84">
-                      <circle opacity="0.9" cx="42" cy="42" r="42" fill="white" />
-                      <path d="M55 42L35 55V29L55 42Z" />
+                  <div className="w-full h-64 bg-gradient-to-r from-primary-400 to-primary-600 flex items-center justify-center">
+                    <svg className="h-24 w-24 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
+                  </div>
+                  <div className="absolute inset-0 w-full h-full flex items-center justify-center">
+                    <div className="rounded-full bg-white bg-opacity-75 p-3">
+                      <svg className="h-12 w-12 text-primary-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+                      </svg>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -175,7 +174,7 @@ export default function Home() {
           </div>
           <div className="mt-8 md:mt-0 md:order-1">
             <p className="text-center text-base text-gray-400">
-              &copy; 2023 AssetTrackr. All rights reserved.
+              &copy; {new Date().getFullYear()} AssetTrackr. All rights reserved.
             </p>
           </div>
         </div>

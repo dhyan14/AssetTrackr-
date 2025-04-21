@@ -21,41 +21,49 @@ export async function POST(request: Request) {
       );
     }
 
-    // Connect to database
-    await dbConnect();
+    try {
+      // Connect to database
+      await dbConnect();
 
-    // Check if user already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
+      // Check if user already exists
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        return NextResponse.json(
+          { message: 'User already exists with this email' },
+          { status: 409 }
+        );
+      }
+
+      // Create user
+      const user = await User.create({
+        name,
+        email,
+        password, // will be hashed by the pre-save hook in the User model
+      });
+
+      // Return success without sending the password
       return NextResponse.json(
-        { message: 'User already exists with this email' },
-        { status: 409 }
+        {
+          message: 'User registered successfully',
+          user: {
+            id: user._id.toString(),
+            name: user.name,
+            email: user.email,
+          },
+        },
+        { status: 201 }
+      );
+    } catch (dbError: any) {
+      console.error('Database operation error:', dbError);
+      return NextResponse.json(
+        { message: 'Database error: ' + (dbError.message || 'Unknown error') },
+        { status: 500 }
       );
     }
-
-    // Create user
-    const user = await User.create({
-      name,
-      email,
-      password, // will be hashed by the pre-save hook in the User model
-    });
-
-    // Return success without sending the password
-    return NextResponse.json(
-      {
-        message: 'User registered successfully',
-        user: {
-          id: user._id.toString(),
-          name: user.name,
-          email: user.email,
-        },
-      },
-      { status: 201 }
-    );
-  } catch (error) {
+  } catch (error: any) {
     console.error('Registration error:', error);
     return NextResponse.json(
-      { message: 'Error creating user' },
+      { message: 'Error creating user: ' + (error.message || 'Unknown error') },
       { status: 500 }
     );
   }
